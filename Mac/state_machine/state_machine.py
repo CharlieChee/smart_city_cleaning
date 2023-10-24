@@ -4,7 +4,7 @@ import paho.mqtt.client as mqtt
 import pygame
 import tkinter as tk
 import random
-
+import mysql.connector
 
 class TableApp:
     def __init__(self, root):
@@ -40,6 +40,7 @@ class TableApp:
         self.latest_mosquitto_data = "0"
         self.init_mqtt_client()
         self.previous_mosquitto_data = "0"
+        self.init_mysql_connection()
 
 
     def play_mp3(self, mp3_path):
@@ -89,16 +90,36 @@ class TableApp:
         self.client.subscribe(topic)
         self.client.loop_start()
 
+    def init_mysql_connection(self):
+        self.mydb = mysql.connector.connect(
+            host="localhost",  # replace with your MySQL host
+            port=3306,
+            user="jcl",  # replace with your MySQL username
+            password="",  # replace with your MySQL password
+            database="mosquitto"  # replace with your MySQL database name
+        )
+        self.mycursor = self.mydb.cursor()
+
+    def save_to_mysql(self, host, topic, message):
+        sql = "INSERT INTO mosquitto_data (host, topic, message) VALUES (%s, %s, %s)"
+        val = (host, topic, message)
+        self.mycursor.execute(sql, val)
+        self.mydb.commit()
     def publish_to_mosquitto(self):
+        host = "172.16.1.166"
+        topic = "location"
+        message = "1_1"
         cmd = [
             "mosquitto_pub",
-            "-h", "172.16.1.166",
-            "-t", "location",
-            "-m", "1_1"
+            "-h", host,
+            "-t", topic,
+            "-m", message
         ]
         try:
             subprocess.run(cmd, check=True)
             print("Published successfully: 1_1")
+            # Save the published message to MySQL
+            self.save_to_mysql(host, topic, message)
         except subprocess.CalledProcessError as e:
             print(f"Publish failed: {e}")
 

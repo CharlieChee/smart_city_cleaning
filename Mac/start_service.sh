@@ -21,3 +21,6 @@ osascript -e 'tell app "Terminal" to do script "python3 /Users/jichanglong/Pycha
 
 # Open a new terminal and run the second Python script
 osascript -e 'tell app "Terminal" to do script "python3 /Users/jichanglong/PycharmProjects/pythonProject/state_machine.py"'
+
+# Open a new terminal and run the third Python script
+osascript -e 'tell app "Terminal" to do script "python3 /Users/jichanglong/PycharmProjects/pythonProject/test_mysql.py"'
