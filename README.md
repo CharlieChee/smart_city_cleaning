@@ -13,3 +13,4 @@ First part:Changlong Ji
 Second part:Karthika Nair
 Robot middleware: Python script that listens to an MQTT topic for incoming data, sends the data to multiple server URLs(Robots) , and then assigns a robot based on the minimum distance result.Contains several Robot scripts which implments RESTful web API using the Flask framework
 
+![GitHub Logo](https://github.com/CharlieChee/smart_city_cleaning/blob/main/architecture.jpg)
